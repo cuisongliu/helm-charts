@@ -205,6 +205,11 @@ def escape(s):
     )
 
 
+class CustomDumper(yaml.Dumper):
+    def increase_indent(self, flow=False, indentless=False):
+        return super(CustomDumper, self).increase_indent(flow, False)
+
+
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="'")
 
@@ -235,6 +240,7 @@ def yaml_dump(struct):
     """represent yaml as a string"""
     return yaml.dump(
         struct,
+        Dumper=CustomDumper,
         width=1000,  # to disable line wrapping
         default_flow_style=False,  # to disable multiple items on single line
     )
