@@ -33,6 +33,9 @@ class literal(str):
 
 
 class CustomDumper(yaml.Dumper):
+    def increase_indent(self, flow=False, indentless=False):
+        return super(CustomDumper, self).increase_indent(flow, False)
+
     def represent_data(self, data):
         # workaround for strings values, that are automatically transformed to "true" in fromYaml helm template function
         if isinstance(data, str) and data in ["y", "n", "yes", "no", "on", "off"]:
